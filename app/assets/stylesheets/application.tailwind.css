@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background: rgb(235, 235, 235) none repeat scroll 0% 0%;
+}
+
+main {
+  box-sizing: border-box !important;
+
+  padding-top: 20px !important;
+  margin-top: 20px !important;
+
+  margin-top: 8vh !important;
+  margin-bottom: 26vh !important;
+}
+
+.card {
+  box-shadow: 4px 4px 4px 0 rgba(34, 36, 38, 0.15), 0px 1px 1px 1px rgba(34, 36, 38, 0.15);
+  background-color: rgb(254, 254, 254);
+  flex: 0 0 31%;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-bottom: 3rem;
+  width: auto;
+  height: auto;
+}

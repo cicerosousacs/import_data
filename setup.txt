@@ -1,0 +1,83 @@
+rails tailwindcss:watch
+rails g controller home index
+
+rails g rspec:install
+
+rails g devise:install
+
+devise.rb linha 266
+descomentar config.navigational_formats = ['*/*', :html, :turbo_stream]
+rails g devise admin
+rails db:migrate
+rails g model RegistrationStatus code:string description:string
+rails g model Nation code:string description:string
+rails g model QualificationPartners code:string description:string
+rails g model LegalNature code:string description:string
+rails g model Cnaes code:string description:string
+rails g model County code:string description:string
+rails g model PartnerType code:string description:string
+rails g model AgeGroup code:string description:string
+
+
+
+rails g model Company cnpj_basic:string name_company:string legal_nature:references qualification_responsible:string share_capital:string company_size:references federative_entity_responsible:string
+
+rails g model Partner cnpj_basic:string partner_type:references name_partner:string document_partner:string qualification_partner:references date_entry_company:string nation:references name_legal_representative:string document_legal_representative:string qualification_legal_representative:string age_group:references
+
+rails g model Simple cnpj_basic:string simple_option:string date_option_simple:string date_exclusion_simple:string opting_for_mei:string mei_option_date:string date_exclusion_mei:string
+
+
+
+
+
+
+
+
+
+  # def type_tables  
+  #   return redirect_to root_path, alert: 'Nenhum arquivo selecionado' unless params[:file]
+  #   return redirect_to root_path, alert: 'O arquivo enviado não é um CSV' unless params[:file].content_type == 'text/csv'
+
+  #   csvImportService = CsvImportService.new(params[:file])
+
+  #   case params[:types]
+  #   when "1"
+  #     csvImportService.import_nation
+  #   when "2"
+  #     csvImportService.import_county
+  #   when "3"
+  #     csvImportService.import_legal_nature
+  #   when "4"
+  #     csvImportService.import_qualifications_partners
+  #   when "5"
+  #     csvImportService.import_registration_status
+  #   when "6"
+  #     csvImportService.import_cnaes
+  #   else
+  #     "Não definido"
+  #   end
+
+  #   redirect_to root_path, notice: "Um total de #{csvImportService.number_imported_with_last_run} registros foram importados!"
+  # end
+
+  # def main_tables
+  #   return redirect_to root_path, alert: 'Nenhum arquivo selecionado' unless params[:file]
+  #   return redirect_to root_path, alert: 'O arquivo enviado não é um CSV' unless params[:file].content_type == 'text/csv' 
+
+  #   csvImportService = CsvImportService.new(params[:file])
+
+  #   case params[:main_tables]
+  #   when "7"
+  #     csvImportService.import_company
+  #   when "8"
+  #     csvImportService.import_establishments
+  #   when "9"
+  #     csvImportService.import_simple_data
+  #   when "10"
+  #     csvImportService.import_partners
+  #   else
+  #     "Não definido"
+  #   end
+
+  #   redirect_to root_path, notice: "Um total de #{csvImportService.number_imported_with_last_run} registros foram importados!"
+  # end

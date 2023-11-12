@@ -1,0 +1,2 @@
+class QualificationPartner < ApplicationRecord
+end

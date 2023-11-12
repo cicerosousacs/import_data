@@ -1,0 +1,23 @@
+default: &default
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  adapter: postgresql
+  database: db_desenv
+  username: scm_minera_dados
+  password: scm_minera_dados
+  host: localhost
+  port: 5432
+
+development:
+  <<: *default
+  schema_search_path: scm_minera_dados
+
+test:
+  <<: *default
+  database: minera_dados_test
+
+production:
+  <<: *default
+  database: minera_dados_production
+  username: minera_dados
+  password: <%= ENV["MINERA_DADOS_DATABASE_PASSWORD"] %>

@@ -1,0 +1,2 @@
+class LegalNature < ApplicationRecord
+end
