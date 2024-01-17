@@ -113,6 +113,41 @@ class CsvImportService
     )
   end
 
+  def find_or_create_establishment(line)
+    Establishment.find_or_create_by!(
+      cnpj_basic: line[0],
+      cnpj_orde: line[1],
+      cnpj_dv: line[2],
+      identifier_office_branch: line[3],
+      fantasy_name: line[4],
+      registration_situation_id: find_registration_situation_id(line[5]),
+      date_status_registration: line[6],
+      registration_status_id: find_registration_status_id(line[7]),
+      city_name_outside: line[8],
+      nation_id: find_nation_id(line[9]),
+      start_date_activity: line[10],
+      cnae_id: find_cnae_id(line[11]),
+      secondary_cnae: line[12],
+      type_street: line[13],
+      street: line[14],
+      number: line[15],
+      complement: line[16],
+      district: line[17],
+      cep: line[18],
+      uf: line[19],
+      county_id: find_county_id(line[20]),
+      ddd_one: line[21],
+      telephone_one: line[22],
+      ddd_two: line[23],
+      telephone_two: line[24],
+      ddd_fax: line[25],
+      fax: line[26],
+      email: line[27],
+      special_situation: line[28],
+      date_special_situation: line[29]
+    )
+  end
+
   def find_or_create_partner(line)
     Partner.find_or_create_by!(
       cnpj_basic: line[0],
@@ -154,5 +189,23 @@ class CsvImportService
 
   def find_company_size_id(code)
     CompanySize.find_by_code(code).id
+  end
+
+  def find_registration_situation_id(code)
+    RegistrationSituation.find_by_code(code).id
+  end
+
+  def find_registration_status_id(code)
+    RegistrationStatus.find_by_code(code).id
+  end
+
+  def find_cnae_id(code)
+    Cnae.find_by_code(code).id
+  end
+
+  def find_county_id(code)
+    # byebug
+    return 5572 if code == "RJ" || code == "GO"
+    County.find_by_code(code).id
   end
 end

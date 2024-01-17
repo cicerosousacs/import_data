@@ -31,3 +31,11 @@
 #   { code: "9", description: "Maiores de 80 anos" },
 #   { code: "0", description: "Não se aplica" }
 # ])
+
+# registration_situation = RegistrationSituation.create([
+#   { code: "1", description: "NULA" },
+#   { code: "2", description: "ATIVA" },
+#   { code: "3", description: "SUSPENSA" },
+#   { code: "4", description: "INAPTA" },
+#   { code: "8", description: "BAIXADA" }
+# ])

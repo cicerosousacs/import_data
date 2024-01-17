@@ -10,6 +10,7 @@ descomentar config.navigational_formats = ['*/*', :html, :turbo_stream]
 rails g devise admin
 rails db:migrate
 rails g model RegistrationStatus code:string description:string
+rails g model RegistrationSituation code:string description:string
 rails g model Nation code:string description:string
 rails g model QualificationPartners code:string description:string
 rails g model LegalNature code:string description:string
@@ -26,7 +27,7 @@ rails g model Partner cnpj_basic:string partner_type:references name_partner:str
 
 rails g model Simple cnpj_basic:string simple_option:string date_option_simple:string date_exclusion_simple:string opting_for_mei:string mei_option_date:string date_exclusion_mei:string
 
-
+rails g model Establishment cnpj_basic:string cnpj_orde:string cnpj_dv:string identifier_office_branch:string fantasy_name:string registration_situation:references date_status_registration:string registration_status:references city_name_outside:string nation:references start_date_activity:string cnae:references secondary_cnae:string type_street:string street:string number:string complement:string district:string cep:string uf:string county:references ddd_one:integer telephone_one:integer ddd_two:integer telephone_two:integer ddd_fax:integer fax:integer email:string special_situation:string date_special_situation:string
 
 
 

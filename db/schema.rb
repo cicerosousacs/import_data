@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_12_151153) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_12_173409) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,46 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_12_151153) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "establishments", force: :cascade do |t|
+    t.string "cnpj_basic"
+    t.string "cnpj_orde"
+    t.string "cnpj_dv"
+    t.string "identifier_office_branch"
+    t.string "fantasy_name"
+    t.bigint "registration_situation_id", null: false
+    t.string "date_status_registration"
+    t.bigint "registration_status_id", null: false
+    t.string "city_name_outside"
+    t.bigint "nation_id", null: false
+    t.string "start_date_activity"
+    t.bigint "cnae_id", null: false
+    t.string "secondary_cnae"
+    t.string "type_street"
+    t.string "street"
+    t.string "number"
+    t.string "complement"
+    t.string "district"
+    t.string "cep"
+    t.string "uf"
+    t.bigint "county_id", null: false
+    t.integer "ddd_one"
+    t.integer "telephone_one"
+    t.integer "ddd_two"
+    t.integer "telephone_two"
+    t.integer "ddd_fax"
+    t.integer "fax"
+    t.string "email"
+    t.string "special_situation"
+    t.string "date_special_situation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cnae_id"], name: "index_establishments_on_cnae_id"
+    t.index ["county_id"], name: "index_establishments_on_county_id"
+    t.index ["nation_id"], name: "index_establishments_on_nation_id"
+    t.index ["registration_situation_id"], name: "index_establishments_on_registration_situation_id"
+    t.index ["registration_status_id"], name: "index_establishments_on_registration_status_id"
+  end
+
   create_table "legal_natures", force: :cascade do |t|
     t.string "code"
     t.string "description"
@@ -116,6 +156,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_12_151153) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "registration_situations", force: :cascade do |t|
+    t.string "code"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "registration_statuses", force: :cascade do |t|
     t.string "code"
     t.string "description"
@@ -137,6 +184,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_12_151153) do
 
   add_foreign_key "companies", "company_sizes"
   add_foreign_key "companies", "legal_natures"
+  add_foreign_key "establishments", "cnaes"
+  add_foreign_key "establishments", "counties"
+  add_foreign_key "establishments", "nations"
+  add_foreign_key "establishments", "registration_situations"
+  add_foreign_key "establishments", "registration_statuses"
   add_foreign_key "partners", "age_groups"
   add_foreign_key "partners", "nations"
   add_foreign_key "partners", "partner_types"
