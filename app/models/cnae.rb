@@ -2,7 +2,7 @@ class Cnae < ApplicationRecord
   def self.list_cnaes
     list = []
     all.each do |c|
-      list.push({label: c.description, value: c.code})
+      list.push({value: c.code, label: c.description})
     end
 
     return list

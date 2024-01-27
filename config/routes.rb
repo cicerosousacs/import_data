@@ -14,5 +14,12 @@ Rails.application.routes.draw do
     resources :cnae
     resources :registration_situation
     resources :company_size
+    resources :county
+
+    get 'municipality_from_uf', to: 'municipality_district#municipality_from_uf'
+    get 'district_from_municipality', to: 'municipality_district#district_from_municipality'
+
+    get 'searchuniq', to: 'search#searchuniq'
+    get 'searchall', to: 'search#searchall'
   end
 end
