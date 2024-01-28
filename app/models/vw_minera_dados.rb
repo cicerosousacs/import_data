@@ -21,7 +21,7 @@ class VwMineraDados < ApplicationRecord
   end
 
   def self.search_all(params)
-    mount_result(query)
+    # mount_result(query)
   end
 
   def self.mount_result(resut)
