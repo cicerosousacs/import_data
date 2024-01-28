@@ -11,11 +11,18 @@ class VwMineraDados < ApplicationRecord
     :share_capital, :company_size, :federative_entity_responsible
   )
 
-  def self.searchuniq(cnpj, company_name)
+  def self.search(type, cnpj, company_name)
     query = all#.order(created_at: :desc)
 
-    query = query.where('LOWER(cnpj) ILIKE ?', "%#{cnpj}%") if cnpj.present?
-    query = query.where('LOWER(fantasy_name) ILIKE ?', "%#{company_name}%") if company_name.present?
+    case type
+    when 'search_uniq'
+      query = query.where('LOWER(cnpj) ILIKE ?', "%#{cnpj}%") if cnpj.present?
+      query = query.where('LOWER(fantasy_name) ILIKE ?', "%#{company_name}%") if company_name.present?
+    when 'search_all'
+      
+    else
+      'Não foi possivel realizar a pesquisa'
+    end
 
     mount_result(query)
   end

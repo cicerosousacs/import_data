@@ -1,11 +1,9 @@
 class SearchController < ApplicationController
-  before_action :searchuniq_params, only: :searchuniq
-  before_action :searchall_params, only: :searchall
+  before_action :search_params, only: :searchuniq
 
-
-  def searchuniq
-    check_params('searchuniq', searchuniq_params)
-    result = VwMineraDados.searchuniq(searchuniq_params[:cnpj], searchuniq_params[:company_name])
+  def search
+    check_params(search_params)
+    result = VwMineraDados.search(search_params[:type], search_params[:cnpj], search_params[:company_name])
     render json: {data: result}
   rescue StandardError => e
     render_error_response(e, :bad_request)
@@ -13,23 +11,17 @@ class SearchController < ApplicationController
     render_error_response('Erro ao Minerar Dados', :internal_server_error)
   end
 
-  def searchall
-  end
-
   private
 
-  def searchuniq_params
-    params.permit(:cnpj, :company_name)
+  def search_params
+    params.permit(:type, :cnpj, :company_name)
   end
 
-  def searchall_params
-  end
-
-  def check_params(type_search, params)
-    case type_search
-    when 'searchuniq'
+  def check_params(params)
+    case params[:type]
+    when 'search_uniq'
       raise 'Informe um CNPJ e/ou um Nome Fantasia/Razão Social' if params.blank?
-    when 'searchall'
+    when 'search_all'
       
     else
       'Parametro invalido'
