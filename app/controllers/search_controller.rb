@@ -1,9 +1,9 @@
 class SearchController < ApplicationController
-  before_action :search_params, only: :searchuniq
+  before_action :search_uniq_params, only: :searchuniq
 
-  def search
-    check_params(search_params)
-    result = VwMineraDados.search(search_params[:type], search_params[:cnpj], search_params[:company_name])
+  def searchuniq
+    check_search_uniq_params(search_uniq_params)
+    result = VwMineraDados.searchuniq(search_uniq_params[:cnpj], search_uniq_params[:company_name])
     render json: {data: result}
   rescue StandardError => e
     render_error_response(e, :bad_request)
@@ -13,11 +13,11 @@ class SearchController < ApplicationController
 
   private
 
-  def search_params
+  def search_uniq_params
     params.permit(:type, :cnpj, :company_name)
   end
 
-  def check_params(params)
+  def check_search_uniq_params(params)
     case params[:type]
     when 'search_uniq'
       raise 'Informe um CNPJ e/ou um Nome Fantasia/Razão Social' if params.blank?
