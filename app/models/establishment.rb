@@ -25,7 +25,7 @@ class Establishment < ApplicationRecord
     municipality = municipality.to_a.uniq { |uf| uf.district }
 
     municipality.each do |district|
-      list.push({label: district.district, value: district.county.id})
+      list.push({label: district.district, value: district.district})
     end
 
     list = list.sort_by { |item| item[:label] }

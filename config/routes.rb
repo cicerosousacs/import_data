@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     get 'municipality_from_uf', to: 'municipality_district#municipality_from_uf'
     get 'district_from_municipality', to: 'municipality_district#district_from_municipality'
 
-    get 'searchuniq', to: 'search#searchuniq'
-    get 'searchall', to: 'search#searchall'
+    get 'search_uniq', to: 'search#search_uniq'
+    get 'search_all', to: 'search#search_all'
   end
 end
