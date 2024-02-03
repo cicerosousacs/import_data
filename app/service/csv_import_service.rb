@@ -42,7 +42,7 @@ class CsvImportService
 
   def import_partners
     @count = 0
-    CSV.foreach(@file, col_sep: ',').with_index do |line, index|
+    CSV.foreach(@file, col_sep: ';').with_index do |line, index|
       Partner.transaction do
         find_or_create_partner(line)
         @count += 1
@@ -78,6 +78,7 @@ class CsvImportService
 
   def import_data(model_class)
     @count = 0
+    # CSV.foreach(@file, col_sep: ';', encoding:'iso-8859-1:utf-8').with_index do |line, index|
     CSV.foreach(@file, col_sep: ',').with_index do |line, index|
       model_class.transaction do
         model_class.find_or_create_by!(

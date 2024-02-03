@@ -3,8 +3,8 @@ class VwMineraDados < ApplicationRecord
   self.primary_key = 'id'
 
   Query_Obj = Struct.new(
-    :cnpj, :identification, :fantasy_name, :registration_situation_id, :date_status_registration, :reason_registration_status, :city_name_outside,
-    :nation, :start_date_activity, :primary_cnae, :secondary_cnae, :address, :cep, :telephone_one, :telephone_two, :fax, :email, :special_situation, 
+    :cnpj, :identification, :fantasy_name, :registration_situation, :date_status_registration, :reason_registration_status, :city_name_outside,
+    :nation, :start_date_activity, :primary_cnae, :secondary_cnae, :address, :uf, :cep, :telephone_one, :telephone_two, :fax, :email, :special_situation, 
     :date_special_situation, :simple_option, :date_option_simple, :date_exclusion_simple, :opting_for_mei, :mei_option_date, :date_exclusion_mei, 
     :partner_type, :name_partner, :document_partner, :qualification_partner, :date_entry_company, :partner_country, :name_legal_representative, 
     :document_legal_representative, :qualification_legal_representative, :age_group, :name_company, :legal_nature, :qualification_responsible, 
@@ -53,7 +53,7 @@ class VwMineraDados < ApplicationRecord
       data.cnpj = r.cnpj
       data.identification = r.identification
       data.fantasy_name = r.fantasy_name
-      data.registration_situation_id = description_registration_situation(r.registration_situation_code)
+      data.registration_situation = description_registration_situation(r.registration_situation_code)
       data.date_status_registration = r.date_status_registration
       data.reason_registration_status = description_reason_registration_status(r.reason_registration_status_code)
       data.city_name_outside = r.city_name_outside
@@ -62,6 +62,7 @@ class VwMineraDados < ApplicationRecord
       data.primary_cnae = description_cnae(r.primary_cnae_code)
       data.secondary_cnae = mount_secondary_cnae(r.secondary_cnae_code)
       data.address = mount_address(r)
+      data.uf = r.uf
       data.cep = r.cep
       data.telephone_one = mount_telephone(r.ddd_one, r.telephone_one)
       data.telephone_two = mount_telephone(r.ddd_two, r.telephone_two)
@@ -118,7 +119,7 @@ class VwMineraDados < ApplicationRecord
       array_string.push(Cnae.find_by_code(secondary_cnae_code).description)
     end
 
-    array_string
+    array_string#.join(', ').split(',')
   end
 
   def self.mount_telephone(ddd, telephone_one)
