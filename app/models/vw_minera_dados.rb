@@ -12,7 +12,7 @@ class VwMineraDados < ApplicationRecord
   )
 
   def self.searchuniq(params)
-    query = all#.order(created_at: :desc)
+    query = all
 
     query = query.where('LOWER(cnpj) ILIKE ?', "%#{params[:cnpj]}%") if params[:cnpj].present?
     query = query.where('LOWER(fantasy_name) ILIKE ?', "%#{params[:fantasy_name]}%") if params[:fantasy_name].present?
@@ -27,6 +27,9 @@ class VwMineraDados < ApplicationRecord
     date_initial = params[:initial_date].presence || params[:end_date]
     date_end = params[:end_date].presence || params[:initial_date]
 
+    query = query.where('LOWER(cnpj) ILIKE ?', "%#{params[:cnpj]}%") if params[:cnpj].present?
+    query = query.where('LOWER(fantasy_name) ILIKE ?', "%#{params[:fantasy_name]}%") if params[:fantasy_name].present?
+    query = query.where('LOWER(name_company) ILIKE ?', "%#{params[:company_name]}%") if params[:company_name].present?
     query = query.where(company_size_code: params[:company_size_code]) if params[:company_size_code].present?
     query = query.where(registration_situation_code: params[:registration_situation_code]) if params[:registration_situation_code].present?
     query = query.where(primary_cnae_code: params[:primary_cnae_code]) if params[:primary_cnae_code].present?
@@ -46,9 +49,9 @@ class VwMineraDados < ApplicationRecord
     initial_date.present? && end_date.present? ? (initial_date..end_date) : nil
   end
 
-  def self.mount_result(resut)
+  def self.mount_result(result)
     filter = []
-    resut.each do |r|
+    result.each do |r|
       data = Query_Obj.new
       data.cnpj = r.cnpj
       data.identification = r.identification

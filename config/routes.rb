@@ -1,5 +1,4 @@
 Rails.application.routes.draw do 
-  # root "import#index"
   root "home#index"
   
   devise_for :admins
@@ -21,5 +20,7 @@ Rails.application.routes.draw do
 
     get 'search_uniq', to: 'search#search_uniq'
     get 'search_all', to: 'search#search_all'
+
+    get 'export_to_xlsx', to: 'export#export_to_xlsx'
   end
 end

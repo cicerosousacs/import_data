@@ -33,6 +33,13 @@ class SearchController < ApplicationController
     params.permit(:company_size_code, :registration_situation_code, :primary_cnae_code, :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date)
   end
 
+  def search_params
+    params.permit(
+      :cnpj, :fantasy_name, :company_name, :company_size_code, :registration_situation_code, :primary_cnae_code, 
+      :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date
+    )
+  end
+
   def check_search_uniq_params(params)
     unless params[:cnpj].present? || params[:fantasy_name].present? || params[:company_name].present?
       raise 'Informe pelo menos um dos seguintes campos: CNPJ, Nome Fantasia ou Razão Social'
