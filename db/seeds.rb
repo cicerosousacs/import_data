@@ -7,10 +7,10 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 company_size = CompanySize.create([
-  { code: "1", description: "NÃO INFORMADO" },
-  { code: "2", description: "MICRO EMPRESA" },
-  { code: "3", description: "EMPRESA DE PEQUENO PORTE" },
-  { code: "5", description: "DEMAIS" }
+  { code: "00", description: "NÃO INFORMADO" },
+  { code: "01", description: "MICRO EMPRESA" },
+  { code: "03", description: "EMPRESA DE PEQUENO PORTE" },
+  { code: "05", description: "DEMAIS" }
 ])
 
 partner_type = PartnerType.create([
@@ -33,9 +33,9 @@ age_group = AgeGroup.create([
 ])
 
 registration_situation = RegistrationSituation.create([
-  { code: "1", description: "NULA" },
+  { code: "01", description: "NULA" },
   { code: "2", description: "ATIVA" },
   { code: "3", description: "SUSPENSA" },
   { code: "4", description: "INAPTA" },
-  { code: "8", description: "BAIXADA" }
+  { code: "08", description: "BAIXADA" }
 ])

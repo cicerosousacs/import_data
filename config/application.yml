@@ -1,0 +1,9 @@
+# default: &default
+#   API_BASE_URL: "http://localhost:3000/" 
+
+development:
+  ITEMS_PER_PAGE       : "20"
+
+# production:
+#   ALFRESCO_FOLDER      : "6f661659-ef27-4f81-89ee-7679bfc745c8" 
+#   ALFRESCO_API_BASE_URL: "http://teste.url.pge.com.br/" 

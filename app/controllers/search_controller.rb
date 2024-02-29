@@ -4,8 +4,8 @@ class SearchController < ApplicationController
 
   def search_uniq
     check_search_uniq_params(search_uniq_params)
-    result = VwMineraDados.searchuniq(search_uniq_params)
-    render json: {data: result}
+    query = VwMineraDados.search_uniq(search_uniq_params)
+    render json: {data: query}
   rescue StandardError => e
     render_error_response(e, :bad_request)
   rescue ExceptionWithResponse
@@ -15,8 +15,8 @@ class SearchController < ApplicationController
   def search_all
     params = remove_undefine_params(search_all_params)
     check_search_all_params(params)
-    result = VwMineraDados.search_all(params)
-    render json: {data: result}
+    query = VwMineraDados.search_all(params)
+    render json: {total_query: query.count, data: query}
   rescue StandardError => e
     render_error_response(e, :bad_request)
   rescue ExceptionWithResponse
@@ -30,13 +30,17 @@ class SearchController < ApplicationController
   end
 
   def search_all_params
-    params.permit(:company_size_code, :registration_situation_code, :primary_cnae_code, :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date)
+    params.permit(
+      :company_size_code, :primary_cnae_code, :uf, :county_code, :district, 
+      :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date, :initial_share_capital, :end_share_capital, :query
+    )
   end
 
   def search_params
     params.permit(
-      :cnpj, :fantasy_name, :company_name, :company_size_code, :registration_situation_code, :primary_cnae_code, 
-      :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date
+      :cnpj, :fantasy_name, :company_name, :share_capital, :company_size_code, :primary_cnae_code, 
+      :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date, :initial_share_capital, 
+      :end_share_capital, :query
     )
   end
 
@@ -47,19 +51,19 @@ class SearchController < ApplicationController
   end
 
   def remove_undefine_params(params)
-    keys_to_check = %i[company_size_code registration_situation_code primary_cnae_code uf county_code district ddd simple_option mei_option email initial_date end_date]
+    keys_to_check = %i[company_size_cod primary_cnae_code uf county_code district ddd simple_option mei_option email initial_date end_date initial_share_capital end_share_capital query]
   
     sanitized_params = {}
   
     keys_to_check.each do |key|
-      sanitized_params[key] = params[key] == "undefined" || params[key] == "null" ? '' : params[key]
+      sanitized_params[key] = params[key] == "undefined" || params[key] == "null" || params[key] == "0" ? '' : params[key]
     end
   
     return sanitized_params
   end
 
   def check_search_all_params(params)
-    required_params = [:company_size_code, :registration_situation_code, :primary_cnae_code, :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date]
+    required_params = [:company_size_code, :primary_cnae_code, :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date, :initial_share_capital, :end_share_capital, :query]
   
     if required_params.none? { |param| params[param].present? }
       raise 'Informe pelo menos um campo para consulta'

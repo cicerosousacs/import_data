@@ -32,7 +32,8 @@ class CsvImportService
 
   def import_company
     @count = 0
-    CSV.foreach(@file, col_sep: ',').with_index do |line, index|
+
+    CSV.foreach(@file, col_sep: ';', encoding:'iso-8859-1:utf-8').with_index do |line, index|
       Company.transaction do
         find_or_create_company(line)
         @count += 1
@@ -42,7 +43,9 @@ class CsvImportService
 
   def import_partners
     @count = 0
-    CSV.foreach(@file, col_sep: ';').with_index do |line, index|
+    CSV.foreach(@file, col_sep: ';', encoding:'iso-8859-1:utf-8').with_index do |line, index|
+
+    # CSV.foreach(@file, col_sep: ',', encoding:'iso-8859-1:utf-8').with_index do |line, index|
       Partner.transaction do
         find_or_create_partner(line)
         @count += 1
@@ -52,7 +55,9 @@ class CsvImportService
 
   def import_establishments
     @count = 0
+
     CSV.foreach(@file, col_sep: ',').with_index do |line, index|
+    # CSV.foreach(@file, col_sep: ';', encoding:'iso-8859-1:utf-8').with_index do |line, index|
       Establishment.transaction do
         find_or_create_establishment(line)
         @count += 1
@@ -62,7 +67,8 @@ class CsvImportService
 
   def import_simple_data
     @count = 0
-    CSV.foreach(@file, col_sep: ',').with_index do |line, index|
+
+    CSV.foreach(@file, col_sep: ',', encoding:'iso-8859-1:utf-8').with_index do |line, index|
       Simple.transaction do
         find_or_create_simple(line)
         @count += 1
@@ -78,8 +84,8 @@ class CsvImportService
 
   def import_data(model_class)
     @count = 0
-    # CSV.foreach(@file, col_sep: ';', encoding:'iso-8859-1:utf-8').with_index do |line, index|
-    CSV.foreach(@file, col_sep: ',').with_index do |line, index|
+
+    CSV.foreach(@file, col_sep: ';', encoding:'iso-8859-1:utf-8').with_index do |line, index|
       model_class.transaction do
         model_class.find_or_create_by!(
           code: line[0],
@@ -150,6 +156,7 @@ class CsvImportService
   end
 
   def find_or_create_partner(line)
+    # byebug
     Partner.find_or_create_by!(
       cnpj_basic: line[0],
       partner_type_id: find_partner_type_id(line[1]),
@@ -166,6 +173,7 @@ class CsvImportService
   end
   
   def find_partner_type_id(code)
+
     PartnerType.find_by_code(code).id
   end
   
@@ -189,14 +197,18 @@ class CsvImportService
   end
 
   def find_company_size_id(code)
+    return '1' if code.blank? || code.nil?
+
     CompanySize.find_by_code(code).id
   end
 
   def find_registration_situation_id(code)
+    # byebug
     RegistrationSituation.find_by_code(code).id
   end
 
   def find_registration_status_id(code)
+    # byebug
     RegistrationStatus.find_by_code(code).id
   end
 
@@ -207,6 +219,7 @@ class CsvImportService
   def find_county_id(code)
     # byebug
     return 5572 if code == "RJ" || code == "GO"
+
     County.find_by_code(code).id
   end
 end
