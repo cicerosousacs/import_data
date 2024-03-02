@@ -1,13 +1,14 @@
 require 'will_paginate/array'
-class VwMineraDados < ApplicationRecord
-  self.table_name = 'scm_minera_dados.vw_minera_dados'
+class VmMineraDados < ApplicationRecord
+  self.table_name = 'scm_minera_dados.vm_minera_dados'
   self.primary_key = 'id'
 
   Query_Obj = Struct.new(
-    :cnpj, :identification, :fantasy_name, :registration_situation, :date_status_registration, :reason_registration_status, :city_name_outside,
-    :nation, :start_date_activity, :primary_cnae, :secondary_cnae, :address, :uf, :cep, :telephone_one, :telephone_two, :fax, :email, :special_situation, 
-    :date_special_situation, :simple_option, :date_option_simple, :date_exclusion_simple, :opting_for_mei, :mei_option_date, :date_exclusion_mei, 
-    :partners, :name_company, :legal_nature, :qualification_responsible, :share_capital, :company_size, :federative_entity_responsible
+    :cnpj, :identification, :fantasy_name, :registration_situation, :date_status_registration, :reason_registration_status, :city_name_outside, :nation,
+    :start_date_activity, :primary_cnae_code, :primary_cnae_description, :secondary_cnae, :address, :district, :city_uf, :uf, :cep, :telephone_one, 
+    :telephone_two, :fax, :email, :special_situation, :date_special_situation, :simple_option, :date_option_simple, :date_exclusion_simple, :opting_for_mei, 
+    :mei_option_date, :date_exclusion_mei, :partners, :name_company, :legal_nature, :qualification_responsible, :share_capital, :company_size,
+    :federative_entity_responsible
   )
 
   def self.search_uniq(params)
@@ -72,9 +73,12 @@ class VwMineraDados < ApplicationRecord
       data.city_name_outside = r.city_name_outside
       data.nation = r.nation
       data.start_date_activity = r.start_date_activity
-      data.primary_cnae = description_cnae(r.primary_cnae_code)
+      data.primary_cnae_code = r.primary_cnae_code
+      data.primary_cnae_description = r.primary_cnae_description
       data.secondary_cnae = mount_secondary_cnae(r.secondary_cnae_code)
       data.address = mount_address(r)
+      data.city_uf = mount_city_uf(r)
+      data.district = r.district
       data.uf = r.uf
       data.cep = r.cep
       data.telephone_one = mount_telephone(r.ddd_one, r.telephone_one)
@@ -101,16 +105,8 @@ class VwMineraDados < ApplicationRecord
     filter
   end
 
-  # def self.description_registration_situation(registration_situation_code)
-  #   RegistrationSituation.find_by_code(registration_situation_code).description
-  # end
-
   def self.description_reason_registration_status(reason_registration_status_code)
     RegistrationStatus.find_by_code(reason_registration_status_code).description
-  end
-
-  def self.description_cnae(cnae_code)
-    Cnae.find_by_code(cnae_code).description
   end
 
   def self.mount_secondary_cnae(secondary_cnae_codes)
@@ -119,14 +115,14 @@ class VwMineraDados < ApplicationRecord
     return nil if secondary_cnae_codes.blank?
 
     secondary_cnae_codes.split(',').each do |secondary_cnae_code|
-      secondary_cnae_code = secondary_cnae_code.start_with?('0') ? secondary_cnae_code[1..-1] : secondary_cnae_code
       secondary_cnae = Cnae.find_by_code(secondary_cnae_code)
+      secondary_cnae_code = secondary_cnae.present? ? secondary_cnae.code : '8888888'
       secondary_cnae_description = secondary_cnae.present? ? secondary_cnae.description : 'Atividade Econônica não informada'
-
-      array_string.push(secondary_cnae_description)
+      
+      array_string.push({id: secondary_cnae.id ,code: secondary_cnae_code, description: secondary_cnae_description})
     end
 
-    array_string.split(',')
+    array_string
   end
 
   def self.mount_telephone(ddd, telephone_one)
@@ -134,25 +130,14 @@ class VwMineraDados < ApplicationRecord
   end
 
   def self.mount_address(r)
-    county = County.find_by_code(r.county_code).description
-    complement = r.complement.present? ? "#{r.complement}, " : ""
-    nation = r.nation == 'NAO DECLARADOS' ? "" : r.nation
+    complement = r.complement.present? ? ", #{r.complement}" : ""
 
-    "#{r.type_street_name}, nº #{r.number}, #{complement}#{county}. #{r.district}/#{r.uf}. #{nation}"
+    "#{r.type_street_name}, nº #{r.number}#{complement}"
   end
 
-  # def self.mount_partners(result)
-  #   partner_type = result.partner_type
-  #   name_partner = result.name_partner
-  #   document_partner = result.document_partner
-  #   qualification_partner = result.qualification_partner 
-  #   date_entry_company = result.date_entry_company
-  #   partner_country = result.partner_country
-  #   name_legal_representative = result.name_legal_representative
-  #   document_legal_representative = result.document_legal_representative
-  #   qualification_legal_representative = result.qualification_legal_representative
-  #   age_group = result.age_group
-  # end
+  def self.mount_city_uf(r)
+    "#{r.county_description} - #{r.uf}"
+  end
 
   def self.description_company_size(company_size_code)
     CompanySize.find_by_code(company_size_code).description

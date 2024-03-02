@@ -4,7 +4,7 @@ class SearchController < ApplicationController
 
   def search_uniq
     check_search_uniq_params(search_uniq_params)
-    query = VwMineraDados.search_uniq(search_uniq_params)
+    query = VmMineraDados.search_uniq(search_uniq_params)
     render json: {data: query}
   rescue StandardError => e
     render_error_response(e, :bad_request)
@@ -15,7 +15,7 @@ class SearchController < ApplicationController
   def search_all
     params = remove_undefine_params(search_all_params)
     check_search_all_params(params)
-    query = VwMineraDados.search_all(params)
+    query = VmMineraDados.search_all(params)
     render json: {total_query: query.count, data: query}
   rescue StandardError => e
     render_error_response(e, :bad_request)

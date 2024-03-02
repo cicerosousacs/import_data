@@ -1,6 +1,6 @@
 class XlsxService
   def self.export_to_xlsx(params)
-    result = VwMineraDados.search_all(params)
+    result = VmMineraDados.search_all(params)
 
     filename = "Minera-#{Time.now.strftime("%d%m%Y%H%M")}.xlsx"
     workbook = WriteXLSX.new("/tmp/#{filename}")
