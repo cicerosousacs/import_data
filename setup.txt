@@ -31,7 +31,8 @@ rails g model Establishment cnpj_basic:string cnpj_orde:string cnpj_dv:string id
 
 
 
-
+rails g model SearchHistory type_history:string date_history:timestamps name_history:string filters:jsonb user_id:integer
+rails g controller SearchHistory index
 
 
 

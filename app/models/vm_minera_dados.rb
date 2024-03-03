@@ -33,8 +33,8 @@ class VmMineraDados < ApplicationRecord
     initial_share_capital = params[:initial_share_capital].presence || params[:end_share_capital]
     end_share_capital = params[:end_share_capital].presence || params[:initial_share_capital]
 
-    query = query.where('LOWER(cnpj) ILIKE ?', "%#{params[:cnpj]}%") if params[:cnpj].present?
-    query = query.where('LOWER(fantasy_name) ILIKE ?', "%#{params[:fantasy_name]}%") if params[:fantasy_name].present?
+    query = query.where(cnpj: params[:cnpj]) if params[:cnpj].present?
+    query = query.where(name_company: params[:company_name]) if params[:company_name].present?
     query = query.where('LOWER(name_company) ILIKE ?', "%#{params[:company_name]}%") if params[:company_name].present?
 
     # query = query.where('LOWER(share_capital) => ?', "#{params[:initial_share_capital]}") if params[:share_capital].present?
