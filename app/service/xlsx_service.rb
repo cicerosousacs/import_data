@@ -1,8 +1,9 @@
 class XlsxService
   def self.export_to_xlsx(params)
+    # byebug
     result = VmMineraDados.search_all(params)
 
-    filename = "Minera-#{Time.now.strftime("%d%m%Y%H%M")}.xlsx"
+    filename = params[:name].present? ? params[:name].gsub(' ', '_') : "Prospecção-#{Time.now.strftime("%d%m%Y%H%M")}.xlsx"
     workbook = WriteXLSX.new("/tmp/#{filename}")
     worksheet = workbook.add_worksheet
     
