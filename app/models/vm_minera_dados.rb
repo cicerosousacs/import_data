@@ -36,11 +36,8 @@ class VmMineraDados < ApplicationRecord
     query = query.where(cnpj: params[:cnpj]) if params[:cnpj].present?
     query = query.where(name_company: params[:company_name]) if params[:company_name].present?
     query = query.where('LOWER(name_company) ILIKE ?', "%#{params[:company_name]}%") if params[:company_name].present?
-
-    # query = query.where('LOWER(share_capital) => ?', "#{params[:initial_share_capital]}") if params[:share_capital].present?
-    query = query.where(share_capital: initial_share_capital..end_share_capital) if params[:initial_share_capital].present? || params[:end_share_capital].present?
+    query = query.where('share_capital >= ? and share_capital <= ?', initial_share_capital, end_share_capital) if params[:initial_share_capital].present? || params[:end_share_capital].present?
     query = query.where(company_size_code: params[:company_size_code]) if params[:company_size_code].present?
-    # query = query.where(registration_situation_code: params[:registration_situation_code]) if params[:registration_situation_code].present?
     query = query.where("primary_cnae_code IN (#{cnaes_codes})") if params[:primary_cnae_code].present?
     query = query.where(uf: params[:uf]) if params[:uf].present?
     query = query.where(county_code: params[:county_code]) if params[:county_code].present?
@@ -94,7 +91,7 @@ class VmMineraDados < ApplicationRecord
       data.mei_option_date = r.mei_option_date
       data.date_exclusion_mei = r.date_exclusion_mei
       data.partners = r.partners
-      data.name_company = r.name_company.gsub(/\d/, '').strip
+      data.name_company = r.name_company.gsub(/\d/, '').gsub(/\./, '').strip
       data.legal_nature = r.legal_nature
       data.qualification_responsible = r.qualification_responsible
       data.share_capital = r.share_capital

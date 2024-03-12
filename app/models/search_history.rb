@@ -43,7 +43,7 @@ class SearchHistory < ApplicationRecord
       "cnpj" => 'CNPJ',
       "company_name" => 'Razão Social',
       "fantasy_name" => 'Nome Fantasia',
-      "company_size_cod" => "Tipo de Empresa",
+      "company_size_code" => "Tipo de Empresa",
       "primary_cnae_code" => "Código CNAE Primário",
       "uf" => "UF",
       "county_code" => "Cidade",
@@ -75,6 +75,8 @@ class SearchHistory < ApplicationRecord
       Date.parse(value).strftime("%d/%m/%Y")
     when *%w[initial_share_capital end_share_capital]
       Money.new(value, "BRL").format(unit: "R$", separator: ",", delimiter: ".", format: "%u %n")
+    when 'company_size_code'
+      CompanySize.find_by_code(value).description
     else
       value
     end

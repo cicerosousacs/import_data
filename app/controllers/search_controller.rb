@@ -5,7 +5,7 @@ class SearchController < ApplicationController
   def search_uniq
     check_search_uniq_params(search_uniq_params)
     query = VmMineraDados.search_uniq(search_uniq_params)
-    # SearchHistory.save_history(params).save!
+
     render json: {data: query}
   rescue StandardError => e
     render_error_response(e, :bad_request)
@@ -16,9 +16,8 @@ class SearchController < ApplicationController
   def search_all
     params = remove_undefine_params(search_all_params)
     check_search_all_params(params)
-    # byebug
     query = VmMineraDados.search_all(params)
-    # SearchHistory.save_history(params).save! unless query.blank?
+
     render json: {total_query: query.count, data: query}
   rescue StandardError => e
     render_error_response(e, :bad_request)
@@ -54,19 +53,19 @@ class SearchController < ApplicationController
   end
 
   def remove_undefine_params(params)
-    keys_to_check = %i[company_size_cod primary_cnae_code uf county_code district ddd simple_option mei_option email initial_date end_date initial_share_capital end_share_capital query]
+    keys_to_check = %i[company_size_code primary_cnae_code uf county_code district ddd simple_option mei_option email initial_date end_date initial_share_capital end_share_capital query]
   
     sanitized_params = {}
   
     keys_to_check.each do |key|
-      sanitized_params[key] = params[key] == "undefined" || params[key] == "null" || params[key] == "0" ? '' : params[key]
+      sanitized_params[key] = params[key] == "undefined" || params[key] == "null" ? '' : params[key]
     end
   
     return sanitized_params
   end
 
   def check_search_all_params(params)
-    required_params = [:company_size_code, :primary_cnae_code, :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date, :initial_share_capital, :end_share_capital, :query]
+    required_params = [:company_size_code, :primary_cnae_code, :uf, :county_code, :district, :ddd, :simple_option, :mei_option, :email, :initial_date, :end_date, :initial_share_capital, :end_share_capital]
   
     if required_params.none? { |param| params[param].present? }
       raise 'Informe pelo menos um campo para consulta'
