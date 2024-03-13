@@ -3,7 +3,7 @@ class SearchHistory < ApplicationRecord
   HistoryObj = Struct.new(:id, :date_history, :name_history, :observation, :filters, :filters_params)
 
   def self.save_history(params)
-    count_history = SearchHistory.count
+    count_history = where('name_history like ?', "Prospecção Nº%").count
     history = SearchHistory.new
     history.type_history = params[:query]
     history.date_history = Time.now
@@ -45,7 +45,7 @@ class SearchHistory < ApplicationRecord
       "fantasy_name" => 'Nome Fantasia',
       "company_size_code" => "Tipo de Empresa",
       "primary_cnae_code" => "Código CNAE Primário",
-      "uf" => "UF",
+      "uf" => "Estado",
       "county_code" => "Cidade",
       "district" => "Bairro",
       "ddd" => "DDD",
