@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   get 'import/index_main_tables'
 
   scope '/api' do
+    post 'sign_in', to: 'auth#sign_in'
+    delete 'sign_out', to: 'auth#sign_out'
+    put 'change_password', to: 'auth#change_password'
+
     resources :cnae
     resources :registration_situation
     resources :company_size
@@ -23,5 +27,10 @@ Rails.application.routes.draw do
     get 'search_history/index'
 
     get 'export_to_xlsx', to: 'export#export_to_xlsx'
+
+    get 'users', to: 'user#list'
+    post 'user_new', to: 'user#new'
+    put 'user_update', to: 'user#update'
+    delete 'user_delete', to: 'user#delete'
   end
 end

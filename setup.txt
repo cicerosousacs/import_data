@@ -18,6 +18,7 @@ rails g model Cnaes code:string description:string
 rails g model County code:string description:string
 rails g model PartnerType code:string description:string
 rails g model AgeGroup code:string description:string
+rails g model CompanySize code:string description:string
 
 
 
@@ -31,8 +32,8 @@ rails g model Establishment cnpj_basic:string cnpj_orde:string cnpj_dv:string id
 
 
 
-rails g model SearchHistory type_history:string date_history:timestamps name_list:string observation:string filters:jsonb user_id:integer account_id:integer
-rails g controller SearchHistory index
+rails g model SearchHistory type_history:string date_history:datetime name_list:string observation:string filters:jsonb user_id:integer account_id:integer
+rails g controller Api::V1::SearchHistory index
 
 
 

@@ -3,12 +3,12 @@ class SearchHistory < ApplicationRecord
   HistoryObj = Struct.new(:id, :date_history, :name_history, :observation, :filters, :filters_params)
 
   def self.save_history(params)
-    count_history = where('name_history like ?', "Prospecção Nº%").count
+    count_history = where('name_history like ?', "Lista Nº%").count
     history = SearchHistory.new
     history.type_history = params[:query]
     history.date_history = Time.now
     history.observation = params[:observation]
-    history.name_history = params[:name].present? ? params[:name] : "Prospecção Nº #{count_history + 1}"
+    history.name_history = params[:name].present? ? params[:name] : "Lista Nº #{count_history + 1}"
     history.filters = params.to_json
     history.user_id = ''
     history

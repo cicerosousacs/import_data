@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_07_005701) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_19_173504) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -181,6 +181,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_07_005701) do
     t.string "observation"
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.string "key"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "simples", force: :cascade do |t|
     t.string "cnpj_basic"
     t.string "simple_option"
@@ -191,6 +198,60 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_07_005701) do
     t.string "date_exclusion_mei"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.string "code"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "description"
+    t.bigint "type_subscription_id", null: false
+    t.integer "quantity_profiles"
+    t.integer "quantity_companies"
+    t.float "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type_subscription_id"], name: "index_subscriptions_on_type_subscription_id"
+  end
+
+  create_table "type_subscriptions", force: :cascade do |t|
+    t.string "code"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "password_digest"
+    t.string "gender"
+    t.string "cpf"
+    t.string "cnpj"
+    t.string "cellphone"
+    t.string "mobile"
+    t.date "birth_date"
+    t.string "cep"
+    t.string "street"
+    t.integer "number"
+    t.string "complement"
+    t.string "reference"
+    t.string "district"
+    t.string "city"
+    t.string "state"
+    t.boolean "authenticated_email"
+    t.bigint "status_id", null: false
+    t.bigint "subscription_id", null: false
+    t.integer "quantity_profiles"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_users_on_status_id"
+    t.index ["subscription_id"], name: "index_users_on_subscription_id"
   end
 
   add_foreign_key "companies", "company_sizes"
@@ -204,4 +265,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_07_005701) do
   add_foreign_key "partners", "nations"
   add_foreign_key "partners", "partner_types"
   add_foreign_key "partners", "qualification_partners"
+  add_foreign_key "subscriptions", "type_subscriptions"
+  add_foreign_key "users", "statuses"
+  add_foreign_key "users", "subscriptions"
 end
