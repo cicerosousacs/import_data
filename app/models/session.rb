@@ -5,6 +5,7 @@ class Session < ApplicationRecord
     payload = { 
       user_id: params[:id],
       user_name: params[:first_name] + ' ' + params[:last_name], 
+      user_password: params[:password_digest],
       exp: exp 
     }
 

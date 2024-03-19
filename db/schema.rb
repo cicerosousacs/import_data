@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_19_173504) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_19_222026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -207,6 +207,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_173504) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sub_users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "password_digest"
+    t.bigint "user_id", null: false
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sub_users_on_user_id"
+  end
+
   create_table "subscriptions", force: :cascade do |t|
     t.string "description"
     t.bigint "type_subscription_id", null: false
@@ -265,6 +277,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_173504) do
   add_foreign_key "partners", "nations"
   add_foreign_key "partners", "partner_types"
   add_foreign_key "partners", "qualification_partners"
+  add_foreign_key "sub_users", "users"
   add_foreign_key "subscriptions", "type_subscriptions"
   add_foreign_key "users", "statuses"
   add_foreign_key "users", "subscriptions"

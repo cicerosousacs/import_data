@@ -17,7 +17,6 @@ Rails.application.routes.draw do
     resources :cnae
     resources :registration_situation
     resources :company_size
-    resources :county
 
     get 'municipality_from_uf', to: 'municipality_district#municipality_from_uf'
     get 'district_from_municipality', to: 'municipality_district#district_from_municipality'
@@ -32,5 +31,10 @@ Rails.application.routes.draw do
     post 'user_new', to: 'user#new'
     put 'user_update', to: 'user#update'
     delete 'user_delete', to: 'user#delete'
+
+    get 'sub_users', to: 'sub_user#list'
+    post 'sub_user/new', to: 'sub_user#new'
+    put 'sub_user/update', to: 'sub_user#update'
+    delete 'sub_user/delete', to: 'sub_user#delete'
   end
 end

@@ -1,5 +1,4 @@
 class UserController < ApplicationController
-  # before_action :user_params, only: [:new, :update]
   skip_forgery_protection
   before_action :authenticated?, except: [:list, :new]
 
@@ -22,9 +21,4 @@ class UserController < ApplicationController
   def delete
   end
 
-  private
-
-  def user_params
-    params.permit!(:first_name, :last_name, :email, :password_digest, :status_id, :subscription_id)
-  end
 end

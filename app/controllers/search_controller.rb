@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  before_action :authenticated?
   before_action :search_uniq_params, only: :search_uniq
   before_action :search_all_params, only: :search_all
 

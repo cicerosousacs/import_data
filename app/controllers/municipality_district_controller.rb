@@ -1,4 +1,5 @@
 class MunicipalityDistrictController < ApplicationController
+  before_action :authenticated?
   before_action :uf_params, only: :municipality_from_uf
   before_action :district_params, only: :district_from_municipality
 

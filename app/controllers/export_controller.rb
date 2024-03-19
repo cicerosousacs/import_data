@@ -1,5 +1,6 @@
 class ExportController < ApplicationController
-
+  before_action :authenticated?
+  
   def export_to_xlsx
     params = remove_undefine_params(params_xlsx)
     SearchHistory.save_history(params).save! if params[:type] == 'search'
